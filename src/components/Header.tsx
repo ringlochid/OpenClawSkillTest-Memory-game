@@ -1,24 +1,36 @@
 import React from 'react'
 
+type HeaderMode = 'setup' | 'game'
+
 interface HeaderProps {
-  showMenu?: boolean
+  mode: HeaderMode
+  onShowMenu?: () => void
+  onRestart?: () => void
+  onNewGame?: () => void
 }
 
-const Header = ({ showMenu = false }: HeaderProps) => {
+const Header = ({ mode, onShowMenu, onRestart, onNewGame }: HeaderProps) => {
   return (
-    <header className="game-header">
+    <header className="game-header" role="banner">
       <h1 className="game-title">memory</h1>
 
-      <div className="game-buttons" aria-label="Header actions">
-        <button className="btn-restart" type="button">
-          Restart
-        </button>
-        <button className="btn-new-game" type="button">
-          New Game
-        </button>
-      </div>
+      {mode === 'game' ? (
+        <div className="header-actions" role="group" aria-label="Game actions">
+          <button type="button" className="desktop-btn primary" onClick={onRestart}>
+            Restart
+          </button>
+          <button type="button" className="desktop-btn ghost" onClick={onNewGame}>
+            New Game
+          </button>
+        </div>
+      ) : null}
 
-      <button className={`menu-pill${showMenu ? ' show' : ''}`} type="button">
+      <button
+        type="button"
+        className="menu-pill"
+        onClick={onShowMenu}
+        aria-label="Open menu"
+      >
         Menu
       </button>
     </header>

@@ -1,15 +1,47 @@
 import React from 'react'
+import { CardModel } from '../types'
 import Card from './Card'
 
-const values = ['03', '08', '15', '22', '41', '36', '49', '57', '06', '18', '27', '31', '44', '53', '64', '72']
+interface BoardProps {
+  cards: CardModel[]
+  cols: number
+  tileSize: number
+  gap: number
+  onFlip: (id: string) => void
+  disabled: boolean
+}
 
-const Board = () => {
+const Board = ({ cards, cols, tileSize, gap, onFlip, disabled }: BoardProps) => {
+  const boardSize = tileSize * cols + gap * (cols - 1)
+
   return (
     <section className="board-container" aria-label="Game board">
-      <div className="game-board-grid" role="grid">
-        {values.map((value, idx) => (
-          <Card key={`${value}-${idx}`} value={value} alt={idx % 2 === 1} />
-        ))}
+      <div
+        className="game-board-grid"
+        role="grid"
+        style={{
+          ['--grid-cols' as any]: String(cols),
+          ['--tile-size' as any]: `${tileSize}px`,
+          ['--board-gap' as any]: `${gap}px`,
+          width: `${boardSize}px`,
+          height: `${boardSize}px`,
+        }}
+      >
+        {cards.map((card, index) => {
+          const row = Math.floor(index / cols)
+          const col = index % cols
+          const isAlternatingFill = (row + col) % 2 === 0
+
+          return (
+            <Card
+              key={card.id}
+              card={card}
+              isAlternatingFill={isAlternatingFill}
+              onActivate={() => onFlip(card.id)}
+              disabled={disabled || card.isMatched || card.isFlipped}
+            />
+          )
+        })}
       </div>
     </section>
   )

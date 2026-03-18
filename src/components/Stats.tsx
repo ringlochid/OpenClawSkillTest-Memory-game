@@ -1,26 +1,29 @@
 import React from 'react'
 
-interface StatItem {
-  label: string
-  value: string
+interface StatsProps {
+  elapsedSeconds: number
+  moves: number
+  playerLabel?: string
 }
 
-const statItems: StatItem[] = [
-  { label: 'Time', value: '4:20' },
-  { label: 'Moves', value: '19' },
-]
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60)
+  const secs = seconds % 60
 
-const Stats = () => {
-  return (
-    <section className="stats-container" aria-label="Game stats">
-      {statItems.map((item) => (
-        <article className="stat-card" key={item.label}>
-          <p className="stat-label">{item.label}</p>
-          <p className="stat-value">{item.value}</p>
-        </article>
-      ))}
-    </section>
-  )
+  return `${mins}:${String(secs).padStart(2, '0')}`
 }
+
+const Stats = ({ elapsedSeconds, moves, playerLabel }: StatsProps) => (
+  <section className="stats-container" aria-label="Game stats">
+    <article className="stat-card">
+      <p className="stat-label">Time</p>
+      <p className="stat-value">{formatTime(elapsedSeconds)}</p>
+    </article>
+    <article className="stat-card">
+      <p className="stat-label">{playerLabel || 'Moves'}</p>
+      <p className="stat-value">{moves}</p>
+    </article>
+  </section>
+)
 
 export default Stats
