@@ -23,7 +23,7 @@ const buildDeck = ({ theme, grid, players }: GameConfig): CardModel[] => {
 
   pairValues.forEach((v) => {
     cards.push(
-      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false, },
+      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false },
       { id: `${v}-${cards.length}-b-${players}`, value: v, isFlipped: false, isMatched: false },
     )
   })
@@ -259,14 +259,6 @@ const App = () => {
   return (
     <main className={`app-root ${screen === 'setup' ? 'setup-mode' : 'game-mode'}`}>
       <div className="game-canvas" role="application">
-        <Header
-          mode={screen}
-          onRestart={screen === 'game' ? restartGame : undefined}
-          onNewGame={screen === 'game' ? handleNewGame : undefined}
-          onShowMenu={screen === 'game' ? () => setMenuOpen((value) => !value) : undefined}
-          isMobile={isMobile}
-        />
-
         {screen === 'setup' ? (
           <SetupScreen
             config={config}
@@ -274,30 +266,40 @@ const App = () => {
             onStart={handleStartGame}
           />
         ) : (
-          <>
-            <Board
-              cards={cards}
-              cols={cols}
-              tileSize={boardSizing.tileSize}
-              gap={boardSizing.gap}
-              onFlip={handleFlip}
-              disabled={isBusy || won || menuOpen}
-            />
-
-            <Stats
-              elapsedSeconds={elapsed}
-              moves={moves}
-              players={config.players}
-              playerScores={scores}
-              activePlayer={currentPlayer}
+          <section className="game-mode-shell">
+            <Header
+              mode={screen}
+              onRestart={restartGame}
+              onNewGame={handleNewGame}
+              onShowMenu={() => setMenuOpen((value) => !value)}
               isMobile={isMobile}
             />
+
+            <section className="game-layout" aria-label="Gameplay">
+              <Board
+                cards={cards}
+                cols={cols}
+                tileSize={boardSizing.tileSize}
+                gap={boardSizing.gap}
+                onFlip={handleFlip}
+                disabled={isBusy || won || menuOpen}
+              />
+
+              <Stats
+                elapsedSeconds={elapsed}
+                moves={moves}
+                players={config.players}
+                playerScores={scores}
+                activePlayer={currentPlayer}
+                isMobile={isMobile}
+              />
+            </section>
 
             {won ? (
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
                   <h2 className="win-title">{resultState.title}</h2>
-                  <p className="win-subtitle">Game over! Here&apos;s how you got on…</p>
+                  <p className="win-subtitle">Game over! Here's how you got on…</p>
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">
@@ -343,7 +345,7 @@ const App = () => {
                 </div>
               </section>
             ) : null}
-          </>
+          </section>
         )}
 
         <MenuModal

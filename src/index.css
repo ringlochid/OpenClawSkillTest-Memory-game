@@ -40,9 +40,6 @@ button {
 
 .app-root {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   position: relative;
 }
 
@@ -56,21 +53,32 @@ button {
 
 .game-canvas {
   position: relative;
-  width: 100%;
   min-height: 100vh;
   background: inherit;
 }
 
+.game-mode-shell {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 16px;
+}
+
+.game-layout {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
 .game-header {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  width: calc(100% - 48px);
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  pointer-events: none;
 }
 
 .game-title {
@@ -88,11 +96,6 @@ button {
 .app-root.game-mode .game-title {
   color: #152938;
 }
-
-.app-root.setup-mode .game-title {
-  display: none;
-}
-
 
 .header-actions,
 .menu-pill,
@@ -152,14 +155,12 @@ button {
 }
 
 .board-container {
-  position: absolute;
-  top: 144px;
-  left: 24px;
-  width: 326px;
-  height: auto;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 0;
+  margin-top: 12px;
 }
 
 .game-board-grid {
@@ -250,11 +251,9 @@ button {
 }
 
 .stats-container {
-  position: absolute;
-  left: 24px;
-  top: 486px;
-  width: 326px;
+  width: 100%;
   display: grid;
+  margin-top: 16px;
 }
 
 .stats-container.solo.mobile {
@@ -271,6 +270,22 @@ button {
 
 .stats-container.players.mobile.players-2 {
   height: 70px;
+}
+
+.stats-container.players.mobile.players-4 .stat-label {
+  font-size: 12px;
+}
+
+.stats-container.players.mobile.players-4 .player-card p:last-child {
+  font-size: 24px;
+}
+
+.stats-container.players.mobile.players-3 .stat-label {
+  font-size: 12px;
+}
+
+.stats-container.players.mobile.players-3 .player-card {
+  height: 60px;
 }
 
 .stat-card,
@@ -344,31 +359,18 @@ button {
 .setup-content {
   width: min(100%, 327px);
   margin-inline: auto;
-}
-
-
-.stats-container.players.mobile.players-4 .stat-label {
-  font-size: 12px;
-}
-
-.stats-container.players.mobile.players-4 .player-card p:last-child {
-  font-size: 24px;
-}
-
-.stats-container.players.mobile.players-3 .stat-label {
-  font-size: 12px;
-}
-
-.stats-container.players.mobile.players-3 .player-card {
-  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .setup-title {
   margin: 0 0 16px;
   color: #fcfcfc;
   text-align: center;
-  font-size: 40px;
-  line-height: 1;
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: 0.2px;
 }
 
 .setup-panel {
@@ -560,15 +562,6 @@ button {
     display: none;
   }
 
-  .app-root.setup-mode .game-title {
-    color: #fcfcfc;
-    text-align: center;
-  }
-
-  .app-root.game-mode .game-title {
-    color: #152938;
-  }
-
   .header-actions {
     display: none;
   }
@@ -578,6 +571,18 @@ button {
   .game-canvas {
     width: 768px;
     height: 1024px;
+    margin: 0 auto;
+  }
+
+  .game-mode-shell {
+    width: 768px;
+    padding: 40px 112px 32px;
+    margin: 0 auto;
+  }
+
+  .game-layout {
+    margin-top: 56px;
+    justify-content: flex-start;
   }
 
   .game-title {
@@ -593,15 +598,16 @@ button {
   }
 
   .board-container {
-    top: 224px;
-    left: 112px;
-    width: 544px;
+    margin-top: 64px;
+    margin-bottom: 74px;
+    min-height: 0;
   }
 
   .stats-container {
-    left: 112px;
-    top: 804px;
     width: 544px;
+    margin: 0 auto;
+    margin-bottom: 0;
+    margin-top: 0;
   }
 
   .stats-container.solo {
@@ -643,7 +649,7 @@ button {
   .setup-title {
     margin: 0 0 24px;
     text-align: center;
-    font-size: 40px;
+    font-size: 56px;
     color: #fcfcfc;
   }
 
@@ -661,6 +667,7 @@ button {
   .game-canvas {
     width: 1440px;
     height: 1024px;
+    margin: 0 auto;
   }
 
   .game-title {
