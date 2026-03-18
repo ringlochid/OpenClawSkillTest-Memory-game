@@ -20,11 +20,12 @@ const buildDeck = ({ theme, grid, players }: GameConfig): CardModel[] => {
   const pairValues = toPairs(theme, pairCount)
 
   const cards: CardModel[] = []
+  const faceType = theme === 'icons' ? 'icon' : 'number'
 
   pairValues.forEach((v) => {
     cards.push(
-      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false },
-      { id: `${v}-${cards.length}-b-${players}`, value: v, isFlipped: false, isMatched: false },
+      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false, faceType },
+      { id: `${v}-${cards.length}-b-${players}`, value: v, isFlipped: false, isMatched: false, faceType },
     )
   })
 
@@ -222,10 +223,10 @@ const App = () => {
     }
 
     return {
-      tileSize: isMobile ? 47 : 72,
-      gap: isMobile ? 8 : 12,
-      cardFontSize: isMobile ? 22 : 30,
-      iconSize: isMobile ? 20 : 30,
+      tileSize: isMobile ? 47 : 82,
+      gap: isMobile ? 8 : 10,
+      cardFontSize: isMobile ? 22 : 36,
+      iconSize: isMobile ? 20 : 36,
     }
   }, [cols, isMobile])
 

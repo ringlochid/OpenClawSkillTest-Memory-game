@@ -13,8 +13,18 @@ const getMaskStyle = (iconUrl: string) => ({
   '--icon-url': `url('${iconUrl}')`,
 } as React.CSSProperties)
 
+const getFaceType = (card: CardModel): 'icon' | 'number' => {
+  if (card.faceType) return card.faceType
+
+  const trimmed = card.value.trim().toLowerCase()
+  return trimmed.includes('.svg') || trimmed.includes('.png') || trimmed.startsWith('data:') || trimmed.startsWith('blob:')
+    ? 'icon'
+    : 'number'
+}
+
 const Card = ({ card, onActivate, disabled }: CardProps) => {
   const state: CardState = card.isMatched ? 'matched' : card.isFlipped ? 'flipped' : 'concealed'
+  const faceType = getFaceType(card)
 
   return (
     <button
@@ -29,7 +39,7 @@ const Card = ({ card, onActivate, disabled }: CardProps) => {
         {state === 'concealed' ? <span className="card-back" /> : null}
 
         {state === 'flipped' || state === 'matched' ? (
-          card.value.includes('.svg') ? <span className="card-icon" style={getMaskStyle(card.value)} /> : <span className="card-value">{card.value}</span>
+          faceType === 'icon' ? <span className="card-icon" style={getMaskStyle(card.value)} /> : <span className="card-value">{card.value}</span>
         ) : null}
       </span>
     </button>

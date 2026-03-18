@@ -8,11 +8,14 @@ export interface GameConfig {
   players: number
 }
 
+export type CardFaceType = 'number' | 'icon'
+
 export interface CardModel {
   id: string
   value: string
   isFlipped: boolean
   isMatched: boolean
+  faceType: CardFaceType
 }
 
 export interface PlayerScore {
