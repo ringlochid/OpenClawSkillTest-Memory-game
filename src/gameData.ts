@@ -1,4 +1,5 @@
-import { ThemeKey } from './types'
+import { getIconAssets } from './utils/icons'
+import type { ThemeKey } from './types'
 
 export const numberValues = [
   '03',
@@ -22,7 +23,9 @@ export const numberValues = [
   '33',
 ]
 
-export const iconValues = ['🦊', '🐶', '🐱', '🐼', '🦁', '🐸', '🦋', '🐢', '🧸', '🍀', '⚽', '🎸', '🚀', '🌙', '🍕', '🎯', '📘', '🔔']
+const iconAssetValues = getIconAssets(18)
+
+export const iconValues = [...iconAssetValues]
 
 export const valuePool = {
   numbers: numberValues,

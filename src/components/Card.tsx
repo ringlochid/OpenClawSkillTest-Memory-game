@@ -8,6 +8,10 @@ interface CardProps {
   disabled: boolean
 }
 
+const getMaskStyle = (iconUrl: string) => ({
+  '--icon-url': `url('${iconUrl}')`,
+} as React.CSSProperties)
+
 const Card = ({ card, isAlternatingFill, onActivate, disabled }: CardProps) => {
   const visible = card.isFlipped || card.isMatched
 
@@ -21,7 +25,13 @@ const Card = ({ card, isAlternatingFill, onActivate, disabled }: CardProps) => {
       aria-label={`Card ${card.value}`}
     >
       <span className="card-content" aria-hidden={!visible}>
-        {visible ? card.value : ''}
+        {visible ? (
+          card.value.includes('.svg') ? (
+            <span className="card-icon" style={getMaskStyle(card.value)} />
+          ) : (
+            <span className="card-value">{card.value}</span>
+          )
+        ) : null}
       </span>
     </button>
   )

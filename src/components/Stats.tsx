@@ -1,13 +1,11 @@
 import React from 'react'
 
 interface StatsProps {
-  screenMode: 'setup' | 'game'
   elapsedSeconds: number
   moves: number
   players?: number
   playerScores?: number[]
   activePlayer?: number
-  activeGrid?: number
   isMobile?: boolean
 }
 
@@ -26,13 +24,15 @@ const FooterCard = ({
   label: string
   value: string | number
   active: boolean
-}) => (
-  <article className={`player-card ${active ? 'active' : ''}`}>
-    {active ? <span className="player-card-notch" aria-hidden="true" /> : null}
-    <p className="stat-label">{label}</p>
-    <p className="stat-value">{value}</p>
-  </article>
-)
+}) => {
+  return (
+    <article className={`player-card ${active ? 'active' : ''}`}>
+      {active ? <span className="player-card-notch" aria-hidden="true" /> : null}
+      <p className="stat-label">{label}</p>
+      <p className="stat-value">{value}</p>
+    </article>
+  )
+}
 
 const Stats = ({
   elapsedSeconds,
@@ -43,8 +43,20 @@ const Stats = ({
   isMobile = true,
 }: StatsProps) => {
   if (players > 1) {
+    const columns = `repeat(${Math.max(1, players)}, minmax(0, 1fr))`
+    const gap = isMobile ? 4 : players === 2 ? 32 : players === 3 ? 12 : 8
+
+    const containerStyle: React.CSSProperties = {
+      gridTemplateColumns: columns,
+      gap: `${gap}px`,
+    }
+
     return (
-      <section className={`stats-container players ${isMobile ? 'mobile' : 'desktop'}`} aria-label="Player scores">
+      <section
+        className={`stats-container players ${isMobile ? 'mobile' : 'desktop'}`}
+        style={containerStyle}
+        aria-label="Player scores"
+      >
         {playerScores.slice(0, players).map((score, index) => (
           <FooterCard
             key={`${index + 1}`}

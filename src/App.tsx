@@ -261,13 +261,11 @@ const App = () => {
             />
 
             <Stats
-              screenMode="game"
               elapsedSeconds={elapsed}
               moves={moves}
               players={config.players}
               playerScores={scores}
               activePlayer={currentPlayer}
-              activeGrid={cols}
               isMobile={isMobile}
             />
 

@@ -184,15 +184,18 @@ button {
 
 .game-card:not(.is-matched) {
   background: #dfe7ec;
+  color: #fcfcfc;
 }
 
 .game-card.is-alt:not(.is-matched) {
   background: #bcced9;
+  color: #fcfcfc;
 }
 
 .game-card.is-matched {
   background: #dfe7ec;
   border: 1px solid rgba(48, 72, 89, 0.24);
+  color: #304859;
 }
 
 .card-content {
@@ -202,6 +205,27 @@ button {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+.card-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon {
+  display: inline-block;
+  width: 44px;
+  height: 44px;
+  background: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
 }
 
 .stats-container {
@@ -220,7 +244,7 @@ button {
 
 .stats-container.players.mobile {
   height: 70px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 4px;
 }
 
@@ -362,9 +386,9 @@ button {
 }
 
 .setup-start-btn {
-  margin-top: 12px;
-  width: 100%;
-  height: 70px;
+  margin: 12px auto 0;
+  width: 276px;
+  height: 48px;
   border-radius: 9999px;
   border: 0;
   font-size: 32px;
@@ -393,13 +417,13 @@ button {
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .win-title {
   margin: 0;
   color: #152938;
-  font-size: 32px;
+  font-size: 40px;
   line-height: 1;
 }
 
@@ -407,14 +431,14 @@ button {
   margin: 0;
   color: #304859;
   font-size: 16px;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .result-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 2px 0 8px;
+  margin: 2px 0 12px;
 }
 
 .result-row {
@@ -445,7 +469,7 @@ button {
 
 .result-actions {
   display: grid;
-  gap: 8px;
+  gap: 16px;
 }
 
 .menu-overlay {
@@ -458,17 +482,27 @@ button {
 }
 
 .menu-modal {
-  width: min(92vw, 327px);
+  width: 327px;
+  height: 224px;
   border-radius: 10px;
   background: #fcfcfc;
   border: 1px solid #bcced9;
   padding: 24px;
   display: grid;
-  gap: 12px;
+  align-content: center;
+  justify-content: center;
+}
+
+.menu-modal-stack {
+  width: 279px;
+  height: 176px;
+  display: grid;
+  gap: 16px;
 }
 
 .menu-modal-btn {
   border: 0;
+  width: 279px;
   height: 48px;
   border-radius: 9999px;
   font-size: 20px;
@@ -528,7 +562,7 @@ button {
   }
 
   .stats-container.players {
-    grid-template-columns: repeat(4, 121px);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     height: 72px;
   }
