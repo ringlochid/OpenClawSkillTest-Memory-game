@@ -89,6 +89,10 @@ button {
   color: #152938;
 }
 
+.app-root.setup-mode .game-title {
+  display: none;
+}
+
 
 .header-actions,
 .menu-pill,
@@ -180,7 +184,7 @@ button {
   line-height: 1;
   font-weight: 700;
   color: #304859;
-  transition: transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  transition: transform 120ms ease, background-color 120ms ease;
   will-change: transform;
 }
 
@@ -189,24 +193,18 @@ button {
 }
 
 .game-card.is-concealed {
-  background: #dfe7ec;
+  background: #304859;
   color: #fcfcfc;
-}
-
-.game-card.is-concealed.is-alt {
-  background: #bcced9;
 }
 
 .game-card.is-flipped {
-  background: #fcfcfc;
+  background: #fda214;
   color: #304859;
-  border: 1px solid #c7d5e0;
 }
 
 .game-card.is-matched {
-  background: #304859;
-  color: #fcfcfc;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: #dfe7ec;
+  color: #304859;
 }
 
 .card-content {
@@ -222,8 +220,12 @@ button {
   width: 15px;
   height: 15px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.74);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.card-content {
+  color: inherit;
 }
 
 .card-value {
@@ -336,7 +338,7 @@ button {
   background: #152938;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 20px 16px;
 }
 
 .setup-content {
@@ -362,10 +364,10 @@ button {
 }
 
 .setup-title {
-  margin: 0 0 24px;
+  margin: 0 0 16px;
   color: #fcfcfc;
   text-align: center;
-  font-size: 24px;
+  font-size: 40px;
   line-height: 1;
 }
 
@@ -373,10 +375,10 @@ button {
   width: 100%;
   border-radius: 20px;
   background: #fcfcfc;
-  padding: 32px 16px;
+  padding: 24px 18px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .setup-group {
@@ -385,7 +387,7 @@ button {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .setup-group-label {
@@ -398,17 +400,17 @@ button {
   width: 100%;
   display: flex;
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
 }
 
 .setup-pill {
-  min-height: 44px;
+  min-height: 40px;
   border-radius: 9999px;
   border: 0;
   flex: 1;
   background: #dfe7ec;
   color: #304859;
-  font-size: 16px;
+  font-size: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -433,7 +435,7 @@ button {
   height: 48px;
   border-radius: 9999px;
   border: 0;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;

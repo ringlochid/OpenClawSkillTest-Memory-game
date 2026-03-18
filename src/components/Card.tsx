@@ -3,7 +3,6 @@ import { CardModel } from '../types'
 
 interface CardProps {
   card: CardModel
-  isAlternatingFill: boolean
   onActivate: () => void
   disabled: boolean
 }
@@ -14,13 +13,13 @@ const getMaskStyle = (iconUrl: string) => ({
   '--icon-url': `url('${iconUrl}')`,
 } as React.CSSProperties)
 
-const Card = ({ card, isAlternatingFill, onActivate, disabled }: CardProps) => {
+const Card = ({ card, onActivate, disabled }: CardProps) => {
   const state: CardState = card.isMatched ? 'matched' : card.isFlipped ? 'flipped' : 'concealed'
 
   return (
     <button
       type="button"
-      className={`game-card is-${state} ${!card.isMatched && isAlternatingFill ? 'is-alt' : ''}`}
+      className={`game-card is-${state}`}
       onClick={disabled ? undefined : onActivate}
       disabled={disabled}
       aria-pressed={state === 'flipped' || state === 'matched'}

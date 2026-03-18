@@ -24,21 +24,9 @@ const Board = ({ cards, cols, tileSize, gap, onFlip, disabled }: BoardProps) => 
   return (
     <section className="board-container" aria-label="Game board">
       <div className="game-board-grid" role="grid" style={boardStyle}>
-        {cards.map((card, index) => {
-          const row = Math.floor(index / cols)
-          const col = index % cols
-          const isAlternatingFill = (row + col) % 2 === 0
-
-          return (
-            <Card
-              key={card.id}
-              card={card}
-              isAlternatingFill={isAlternatingFill}
-              onActivate={() => onFlip(card.id)}
-              disabled={disabled || card.isMatched || card.isFlipped}
-            />
-          )
-        })}
+        {cards.map((card) => (
+          <Card key={card.id} card={card} onActivate={() => onFlip(card.id)} disabled={disabled || card.isMatched || card.isFlipped} />
+        ))}
       </div>
     </section>
   )
