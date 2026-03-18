@@ -224,7 +224,7 @@ const App = () => {
 
     return {
       tileSize: isMobile ? 47 : 82,
-      gap: isMobile ? 8 : 10,
+      gap: isMobile ? 8 : 16,
       cardFontSize: isMobile ? 22 : 36,
       iconSize: isMobile ? 20 : 36,
     }
