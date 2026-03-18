@@ -7,6 +7,8 @@ import SetupScreen from './components/SetupScreen'
 import { CardModel, GameConfig } from './types'
 import { valuePool } from './gameData'
 
+type ScreenMode = 'setup' | 'game'
+
 const toPairs = (value: string, needed: number): string[] => {
   const pool = valuePool[value as keyof typeof valuePool]
   return pool.slice(0, needed)
@@ -21,7 +23,7 @@ const buildDeck = ({ theme, grid, players }: GameConfig): CardModel[] => {
 
   pairValues.forEach((v) => {
     cards.push(
-      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false },
+      { id: `${v}-${cards.length}-a-${players}`, value: v, isFlipped: false, isMatched: false, },
       { id: `${v}-${cards.length}-b-${players}`, value: v, isFlipped: false, isMatched: false },
     )
   })
@@ -40,7 +42,7 @@ const parseGrid = (grid: GameConfig['grid']) => {
 }
 
 const App = () => {
-  const [screen, setScreen] = React.useState<'setup' | 'game'>('setup')
+  const [screen, setScreen] = React.useState<ScreenMode>('setup')
   const [config, setConfig] = React.useState<GameConfig>({ theme: 'numbers', grid: '4x4', players: 1 })
   const [cards, setCards] = React.useState<CardModel[]>([])
   const [moves, setMoves] = React.useState(0)
@@ -50,12 +52,12 @@ const App = () => {
   const [won, setWon] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   const [viewportWidth, setViewportWidth] = React.useState<number>(375)
+  const [currentPlayer, setCurrentPlayer] = React.useState(0)
+  const [scores, setScores] = React.useState<number[]>([0, 0, 0, 0])
   const flipRef = React.useRef<number | null>(null)
 
   const { rows, cols } = parseGrid(config.grid)
-
   const isMobile = viewportWidth < 768
-
   const isReady = cards.length > 0
 
   React.useEffect(() => {
@@ -91,6 +93,8 @@ const App = () => {
   }, [cards, isReady, won])
 
   const initGame = React.useCallback((nextConfig: GameConfig) => {
+    const players = nextConfig.players
+
     const newCards = buildDeck(nextConfig)
     setCards(newCards)
     setConfig(nextConfig)
@@ -99,6 +103,9 @@ const App = () => {
     setSelectedIds([])
     setWon(false)
     setIsBusy(false)
+    setCurrentPlayer(0)
+    setScores(Array.from({ length: players }, () => 0))
+    setMenuOpen(false)
     setScreen('game')
 
     if (flipRef.current) {
@@ -118,10 +125,31 @@ const App = () => {
   const handleNewGame = () => {
     setScreen('setup')
     setMenuOpen(false)
+    setWon(false)
+    setCards([])
+  }
+
+  const handleResumeGame = () => {
+    setMenuOpen(false)
+  }
+
+  const registerScore = (isMatch: boolean) => {
+    if (!isMatch || config.players <= 1) return
+
+    setScores((prev) => {
+      const next = [...prev]
+      next[currentPlayer] += 1
+      return next
+    })
+  }
+
+  const rotateTurn = () => {
+    if (config.players <= 1) return
+    setCurrentPlayer((value) => (value + 1) % config.players)
   }
 
   const handleFlip = (id: string) => {
-    if (isBusy || won) return
+    if (isBusy || won || menuOpen) return
 
     const clicked = cards.find((card) => card.id === id)
     if (!clicked || clicked.isMatched || clicked.isFlipped) return
@@ -161,6 +189,7 @@ const App = () => {
             : card,
         ),
       )
+      registerScore(true)
       setSelectedIds([])
       setIsBusy(false)
       return
@@ -174,6 +203,8 @@ const App = () => {
             : card,
         ),
       )
+      registerScore(false)
+      rotateTurn()
       setSelectedIds([])
       setIsBusy(false)
       flipRef.current = null
@@ -181,32 +212,35 @@ const App = () => {
   }
 
   const boardSizing = React.useMemo(() => {
-    if (isMobile) {
-      if (cols === 4) {
-        return { tileSize: 72.5, gap: 12 }
-      }
-
-      return { tileSize: 52, gap: 8 }
-    }
-
     if (cols === 4) {
-      return { tileSize: 118, gap: 24 }
+      return {
+        tileSize: isMobile ? 72.5 : 118,
+        gap: isMobile ? 12 : 24,
+      }
     }
 
     return {
-      tileSize: Math.round(((544 - (cols - 1) * 24) / cols) * 10) / 10,
-      gap: 24,
+      tileSize: isMobile ? 47 : 82,
+      gap: isMobile ? 8 : 24,
     }
   }, [cols, isMobile])
 
+  const rankedPlayers = React.useMemo(() => {
+    return scores
+      .map((score, index) => ({ player: index + 1, score }))
+      .filter((entry) => entry.player <= config.players)
+      .sort((a, b) => b.score - a.score)
+  }, [scores, config.players])
+
   return (
-    <main className="app-root">
+    <main className={`app-root ${screen === 'setup' ? 'setup-mode' : 'game-mode'}`}>
       <div className="game-canvas" role="application">
         <Header
           mode={screen}
           onRestart={screen === 'game' ? restartGame : undefined}
           onNewGame={screen === 'game' ? handleNewGame : undefined}
           onShowMenu={screen === 'game' ? () => setMenuOpen((value) => !value) : undefined}
+          isMobile={isMobile}
         />
 
         {screen === 'setup' ? (
@@ -223,40 +257,76 @@ const App = () => {
               tileSize={boardSizing.tileSize}
               gap={boardSizing.gap}
               onFlip={handleFlip}
-              disabled={isBusy}
+              disabled={isBusy || won || menuOpen}
             />
+
             <Stats
+              screenMode="game"
               elapsedSeconds={elapsed}
               moves={moves}
-              playerLabel={config.players > 1 ? `Moves (P1)` : 'Moves'}
+              players={config.players}
+              playerScores={scores}
+              activePlayer={currentPlayer}
+              activeGrid={cols}
+              isMobile={isMobile}
             />
 
             {won ? (
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
-                  <p className="win-title">You did it!</p>
-                  <p className="win-subtitle">{rows}x{cols} • {moves} moves</p>
-                  <button
-                    type="button"
-                    className="menu-modal-btn primary"
-                    onClick={handleStartGame}
-                  >
-                    Play Again
-                  </button>
+                  <h2 className="win-title">You did it!</h2>
+                  <p className="win-subtitle">Game over! Here&apos;s how you got on…</p>
+
+                  {config.players > 1 ? (
+                    <div className="result-list" role="list">
+                      {rankedPlayers.map((entry, index) => (
+                        <div
+                          key={entry.player}
+                          className={`result-row ${index === 0 ? 'winner' : ''}`}
+                          role="listitem"
+                        >
+                          <p>{`Player ${entry.player} ${index === 0 ? '(Winner)' : ''}`}</p>
+                          <p>{entry.score}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="result-list" role="list">
+                      <div className="result-row">
+                        <p>Time</p>
+                        <p>
+                          {String(Math.floor(elapsed / 60)).padStart(2, '0')}:{String(elapsed % 60).padStart(2, '0')}
+                        </p>
+                      </div>
+                      <div className="result-row">
+                        <p>Moves</p>
+                        <p>{moves}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="result-actions">
+                    <button type="button" className="menu-modal-btn primary" onClick={handleStartGame}>
+                      Restart
+                    </button>
+                    <button type="button" className="menu-modal-btn" onClick={handleNewGame}>
+                      Setup New Game
+                    </button>
+                  </div>
                 </div>
               </section>
             ) : null}
           </>
         )}
-      </div>
 
         <MenuModal
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
+          open={menuOpen && screen === 'game'}
+          onClose={handleResumeGame}
           onRestart={restartGame}
           onNewGame={handleNewGame}
         />
-      </main>
+      </div>
+    </main>
   )
 }
 

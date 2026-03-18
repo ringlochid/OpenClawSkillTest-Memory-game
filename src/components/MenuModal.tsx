@@ -11,8 +11,8 @@ const MenuModal = ({ open, onClose, onRestart, onNewGame }: MenuModalProps) => {
   if (!open) return null
 
   return (
-    <div className="menu-overlay" role="dialog" aria-modal="true" aria-label="Game menu">
-      <div className="menu-modal">
+    <div className="menu-overlay" role="dialog" aria-modal="true" aria-label="Game menu" onClick={onClose}>
+      <div className="menu-modal" onClick={(event) => event.stopPropagation()}>
         <button
           type="button"
           className="menu-modal-btn primary"
@@ -33,8 +33,8 @@ const MenuModal = ({ open, onClose, onRestart, onNewGame }: MenuModalProps) => {
         >
           New Game
         </button>
-        <button type="button" className="menu-modal-btn ghost" onClick={onClose}>
-          Continue
+        <button type="button" className="menu-modal-btn" onClick={onClose}>
+          Resume Game
         </button>
       </div>
     </div>

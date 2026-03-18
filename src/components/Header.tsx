@@ -7,9 +7,10 @@ interface HeaderProps {
   onShowMenu?: () => void
   onRestart?: () => void
   onNewGame?: () => void
+  isMobile?: boolean
 }
 
-const Header = ({ mode, onShowMenu, onRestart, onNewGame }: HeaderProps) => {
+const Header = ({ mode, onShowMenu, onRestart, onNewGame, isMobile }: HeaderProps) => {
   return (
     <header className="game-header" role="banner">
       <h1 className="game-title">memory</h1>
@@ -25,14 +26,16 @@ const Header = ({ mode, onShowMenu, onRestart, onNewGame }: HeaderProps) => {
         </div>
       ) : null}
 
-      <button
-        type="button"
-        className="menu-pill"
-        onClick={onShowMenu}
-        aria-label="Open menu"
-      >
-        Menu
-      </button>
+      {mode === 'game' ? (
+        <button
+          type="button"
+          className={isMobile ? 'menu-pill' : 'menu-pill hidden-desktop'}
+          onClick={onShowMenu}
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+      ) : null}
     </header>
   )
 }
