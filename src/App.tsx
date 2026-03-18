@@ -216,12 +216,16 @@ const App = () => {
       return {
         tileSize: isMobile ? 72.5 : 118,
         gap: isMobile ? 12 : 24,
+        cardFontSize: isMobile ? 40 : 58,
+        iconSize: isMobile ? 36 : 54,
       }
     }
 
     return {
-      tileSize: isMobile ? 47 : 82,
-      gap: isMobile ? 8 : 24,
+      tileSize: isMobile ? 47 : 72,
+      gap: isMobile ? 8 : 12,
+      cardFontSize: isMobile ? 22 : 30,
+      iconSize: isMobile ? 20 : 30,
     }
   }, [cols, isMobile])
 
@@ -281,6 +285,8 @@ const App = () => {
                 cols={cols}
                 tileSize={boardSizing.tileSize}
                 gap={boardSizing.gap}
+                cardFontSize={boardSizing.cardFontSize}
+                iconSize={boardSizing.iconSize}
                 onFlip={handleFlip}
                 disabled={isBusy || won || menuOpen}
               />
@@ -299,7 +305,7 @@ const App = () => {
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
                   <h2 className="win-title">{resultState.title}</h2>
-                  <p className="win-subtitle">Game over! Here's how you got on…</p>
+                  <p className="win-subtitle">Game over — here&apos;s how you did.</p>
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">
@@ -339,7 +345,7 @@ const App = () => {
                       Restart
                     </button>
                     <button type="button" className="menu-modal-btn" onClick={handleNewGame}>
-                      Setup New Game
+                      New Game
                     </button>
                   </div>
                 </div>

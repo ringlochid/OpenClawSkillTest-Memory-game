@@ -128,6 +128,14 @@ button {
   font-size: 20px;
 }
 
+.desktop-btn.ghost {
+  width: 149px;
+}
+
+.desktop-btn.primary {
+  width: 106px;
+}
+
 .desktop-btn.primary,
 .menu-pill,
 .menu-modal-btn.primary,
@@ -181,7 +189,7 @@ button {
   user-select: none;
   padding: 0;
   cursor: pointer;
-  font-size: 40px;
+  font-size: var(--card-font-size, 40px);
   line-height: 1;
   font-weight: 700;
   color: #304859;
@@ -200,12 +208,16 @@ button {
 
 .game-card.is-flipped {
   background: #fda214;
-  color: #304859;
+  color: #152938;
 }
 
 .game-card.is-matched {
   background: #dfe7ec;
-  color: #304859;
+  color: #7191a5;
+}
+
+.game-card.is-matched .card-icon {
+  opacity: 0.92;
 }
 
 .card-content {
@@ -237,8 +249,8 @@ button {
 
 .card-icon {
   display: inline-block;
-  width: 44px;
-  height: 44px;
+  width: var(--card-icon-size, 44px);
+  height: var(--card-icon-size, 44px);
   background: currentColor;
   -webkit-mask-size: contain;
   mask-size: contain;
@@ -636,10 +648,6 @@ button {
   .stat-value,
   .player-card p:last-child {
     font-size: 32px;
-  }
-
-  .game-card {
-    font-size: 58px;
   }
 
   .setup-content {

@@ -7,16 +7,20 @@ interface BoardProps {
   cols: number
   tileSize: number
   gap: number
+  cardFontSize: number
+  iconSize: number
   onFlip: (id: string) => void
   disabled: boolean
 }
 
-const Board = ({ cards, cols, tileSize, gap, onFlip, disabled }: BoardProps) => {
+const Board = ({ cards, cols, tileSize, gap, cardFontSize, iconSize, onFlip, disabled }: BoardProps) => {
   const boardSize = tileSize * cols + gap * (cols - 1)
   const boardStyle: React.CSSProperties = {
     ['--grid-cols' as any]: String(cols),
     ['--tile-size' as any]: `${tileSize}px`,
     ['--board-gap' as any]: `${gap}px`,
+    ['--card-font-size' as any]: `${cardFontSize}px`,
+    ['--card-icon-size' as any]: `${iconSize}px`,
     width: `${boardSize}px`,
     height: `${boardSize}px`,
   }
