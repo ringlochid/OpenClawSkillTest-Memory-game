@@ -223,10 +223,10 @@ const App = () => {
     }
 
     return {
-      tileSize: isMobile ? 47 : 82,
-      gap: isMobile ? 8 : 16,
+      tileSize: isMobile ? 47 : 73,
+      gap: isMobile ? 8 : 14,
       cardFontSize: isMobile ? 22 : 36,
-      iconSize: isMobile ? 20 : 36,
+      iconSize: isMobile ? 20 : 33,
     }
   }, [cols, isMobile])
 
@@ -239,25 +239,29 @@ const App = () => {
 
   const resultState = React.useMemo(() => {
     if (config.players <= 1) {
-      return { title: 'You did it!', isTie: false }
+      return {
+        title: 'You did it!',
+        isTie: false,
+        topWinners: [] as { player: number; score: number }[],
+      }
     }
 
     const first = rankedPlayers[0]
     if (!first) {
-      return { title: 'Game over', isTie: false }
+      return {
+        title: 'Game over',
+        isTie: false,
+        topWinners: [] as { player: number; score: number }[],
+      }
     }
 
     const topScore = first.score
     const winners = rankedPlayers.filter((entry) => entry.score === topScore)
-    const isTie = winners.length > 1
-
-    if (isTie) {
-      return { title: "It's a tie!", isTie: true }
-    }
 
     return {
-      title: `Player ${first.player} Wins!`,
-      isTie: false,
+      title: winners.length > 1 ? "It's a tie!" : `Player ${first.player} Wins!`,
+      isTie: winners.length > 1,
+      topWinners: winners,
     }
   }, [config.players, rankedPlayers])
 
@@ -310,18 +314,19 @@ const App = () => {
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">
-                      {rankedPlayers.map((entry, index) => {
-                        const isTop = index === 0
-                        const isTiedWinner = resultState.isTie && entry.score === rankedPlayers[0].score
+                      {rankedPlayers.map((entry) => {
+                        const isWinner = resultState.isTie
+                          ? resultState.topWinners.some((winner) => winner.player === entry.player)
+                          : entry.player === rankedPlayers[0]?.player
 
                         return (
                           <div
                             key={entry.player}
-                            className={`result-row ${isTop && !resultState.isTie ? 'winner' : ''} ${isTiedWinner ? 'winner' : ''}`}
+                            className={`result-row ${isWinner ? 'winner' : ''}`}
                             role="listitem"
                           >
-                            <p>{`Player ${entry.player}${isTiedWinner ? ' (Winner)' : ''}`}</p>
-                            <p>{entry.score}</p>
+                            <p>{`Player ${entry.player}${isWinner ? ' (Winner)' : ''}`}</p>
+                            <p>{entry.score} Pair{entry.score === 1 ? '' : 's'}</p>
                           </div>
                         )
                       })}

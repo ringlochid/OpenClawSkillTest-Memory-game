@@ -20,14 +20,17 @@ const FooterCard = ({
   label,
   value,
   active,
+  showTurnLabel,
 }: {
   label: string
   value: string | number
   active: boolean
+  showTurnLabel: boolean
 }) => {
   return (
     <article className={`player-card ${active ? 'active' : ''}`}>
       {active ? <span className="player-card-notch" aria-hidden="true" /> : null}
+      {active && showTurnLabel ? <p className="player-turn-label">CURRENT TURN</p> : null}
       <p className="stat-label">{label}</p>
       <p className="stat-value">{value}</p>
     </article>
@@ -63,6 +66,7 @@ const Stats = ({
             label={`P${index + 1}`}
             value={score}
             active={index === activePlayer}
+            showTurnLabel={players > 1}
           />
         ))}
       </section>

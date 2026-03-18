@@ -62,7 +62,7 @@ button {
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 24px 24px 16px;
+  padding: 28px 24px 18px;
 }
 
 .game-layout {
@@ -105,8 +105,8 @@ button {
 
 .header-actions {
   display: none;
-  gap: 16px;
-  height: 52px;
+  gap: 10px;
+  height: 44px;
 }
 
 .desktop-btn,
@@ -120,16 +120,16 @@ button {
 }
 
 .desktop-btn {
-  height: 52px;
-  width: 127px;
+  height: 44px;
+  width: 116px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .desktop-btn.ghost {
-  width: 149px;
+  width: 128px;
 }
 
 .desktop-btn.primary,
@@ -203,8 +203,9 @@ button {
 }
 
 .game-card.is-flipped {
-  background: #fda214;
+  background: #fcfcfc;
   color: #152938;
+  box-shadow: inset 0 0 0 3px #fda214;
 }
 
 .game-card.is-matched {
@@ -300,7 +301,7 @@ button {
 .player-card {
   border-radius: 10px;
   background: #dfe7ec;
-  padding: 8px 12px;
+  padding: 6px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -312,23 +313,23 @@ button {
 .player-card p:first-child {
   margin: 0;
   color: #7191a5;
-  font-size: 16px;
-  line-height: 1;
+  font-size: 14px;
+  line-height: 1.1;
 }
 
 .stat-value,
 .player-card p:last-child {
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   color: #304859;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1;
 }
 
 .player-card {
   position: relative;
   min-height: 0;
-  height: 70px;
-  min-height: 70px;
+  height: 64px;
+  min-height: 64px;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -340,6 +341,20 @@ button {
 
 .player-card.active .stat-label,
 .player-card.active p:last-child {
+  color: #fcfcfc;
+}
+
+.player-turn-label {
+  margin: 0 0 2px;
+  color: #152938;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.player-card.active .player-turn-label {
   color: #fcfcfc;
 }
 
@@ -468,10 +483,10 @@ button {
   border-radius: 16px;
   background: #fcfcfc;
   border: 1px solid #bcced9;
-  padding: 24px;
+  padding: 22px 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .win-title {
@@ -536,30 +551,32 @@ button {
 }
 
 .menu-modal {
-  width: 327px;
-  height: 224px;
+  width: min(88vw, 327px);
+  max-width: 327px;
   border-radius: 10px;
   background: #fcfcfc;
   border: 1px solid #bcced9;
-  padding: 24px;
+  padding: 24px 20px;
   display: grid;
   align-content: center;
   justify-content: center;
 }
 
 .menu-modal-stack {
-  width: 279px;
-  height: 176px;
+  width: 100%;
+  max-width: 279px;
+  height: auto;
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 
 .menu-modal-btn {
   border: 0;
-  width: 279px;
-  height: 48px;
+  width: 100%;
+  max-width: 279px;
+  height: 46px;
   border-radius: 9999px;
-  font-size: 20px;
+  font-size: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -584,17 +601,17 @@ button {
 
   .game-mode-shell {
     width: 768px;
-    padding: 40px 112px 32px;
+    padding: 34px 100px 28px;
     margin: 0 auto;
   }
 
   .game-layout {
-    margin-top: 56px;
+    margin-top: 40px;
     justify-content: flex-start;
   }
 
   .game-title {
-    font-size: 40px;
+    font-size: 38px;
   }
 
   .header-actions {
@@ -606,44 +623,48 @@ button {
   }
 
   .board-container {
-    margin-top: 64px;
-    margin-bottom: 74px;
+    margin-top: 52px;
+    margin-bottom: 56px;
     min-height: 0;
   }
 
   .stats-container {
-    width: 544px;
+    width: 513px;
     margin: 0 auto;
     margin-bottom: 0;
     margin-top: 0;
   }
 
   .stats-container.solo {
-    height: 72px;
-    grid-template-columns: repeat(2, 255px);
-    gap: 32px;
+    height: 62px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
   }
 
   .stats-container.players {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
-    height: 72px;
+    height: 64px;
   }
 
   .stat-card,
   .player-card {
     border-radius: 10px;
-    padding: 10px 16px;
+    padding: 8px 10px;
   }
 
   .stat-label,
   .player-card p:first-child {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .stat-value,
   .player-card p:last-child {
-    font-size: 32px;
+    font-size: 28px;
+  }
+
+  .player-card.active .player-turn-label {
+    color: #fcfcfc;
   }
 
   .setup-content {
