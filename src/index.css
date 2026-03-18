@@ -81,15 +81,19 @@ button {
   color: #152938;
 }
 
+.app-root.setup-mode .game-title {
+  color: #fcfcfc;
+}
+
+.app-root.game-mode .game-title {
+  color: #152938;
+}
+
+
 .header-actions,
 .menu-pill,
 .game-header > * {
   pointer-events: auto;
-}
-
-.game-title,
-.header-actions {
-  color: #152938;
 }
 
 .header-actions {
@@ -166,36 +170,43 @@ button {
   height: var(--tile-size);
   border: 0;
   border-radius: 9999px;
-  color: #304859;
-  font-size: 40px;
-  line-height: 1;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   user-select: none;
   padding: 0;
   cursor: pointer;
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 700;
+  color: #304859;
+  transition: transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  will-change: transform;
 }
 
 .game-card:disabled {
   cursor: default;
 }
 
-.game-card:not(.is-matched) {
+.game-card.is-concealed {
   background: #dfe7ec;
   color: #fcfcfc;
 }
 
-.game-card.is-alt:not(.is-matched) {
+.game-card.is-concealed.is-alt {
   background: #bcced9;
-  color: #fcfcfc;
+}
+
+.game-card.is-flipped {
+  background: #fcfcfc;
+  color: #304859;
+  border: 1px solid #c7d5e0;
 }
 
 .game-card.is-matched {
-  background: #dfe7ec;
-  border: 1px solid rgba(48, 72, 89, 0.24);
-  color: #304859;
+  background: #304859;
+  color: #fcfcfc;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .card-content {
@@ -205,6 +216,14 @@ button {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+.card-back {
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45);
 }
 
 .card-value {
@@ -243,9 +262,13 @@ button {
 }
 
 .stats-container.players.mobile {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  height: 62px;
+}
+
+.stats-container.players.mobile.players-2 {
   height: 70px;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
 }
 
 .stat-card,
@@ -257,6 +280,7 @@ button {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
+  min-width: 0;
 }
 
 .stat-label,
@@ -277,6 +301,7 @@ button {
 
 .player-card {
   position: relative;
+  min-height: 0;
   height: 70px;
   min-height: 70px;
   align-items: center;
@@ -319,10 +344,27 @@ button {
   margin-inline: auto;
 }
 
+
+.stats-container.players.mobile.players-4 .stat-label {
+  font-size: 12px;
+}
+
+.stats-container.players.mobile.players-4 .player-card p:last-child {
+  font-size: 24px;
+}
+
+.stats-container.players.mobile.players-3 .stat-label {
+  font-size: 12px;
+}
+
+.stats-container.players.mobile.players-3 .player-card {
+  height: 60px;
+}
+
 .setup-title {
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   color: #fcfcfc;
-  text-align: left;
+  text-align: center;
   font-size: 24px;
   line-height: 1;
 }
@@ -331,10 +373,10 @@ button {
   width: 100%;
   border-radius: 20px;
   background: #fcfcfc;
-  padding: 32px 24px;
+  padding: 32px 16px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .setup-group {
@@ -343,7 +385,7 @@ button {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .setup-group-label {
@@ -360,7 +402,7 @@ button {
 }
 
 .setup-pill {
-  min-height: 52px;
+  min-height: 44px;
   border-radius: 9999px;
   border: 0;
   flex: 1;
@@ -387,11 +429,11 @@ button {
 
 .setup-start-btn {
   margin: 12px auto 0;
-  width: 276px;
+  width: 100%;
   height: 48px;
   border-radius: 9999px;
   border: 0;
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -516,8 +558,13 @@ button {
     display: none;
   }
 
-  .game-title {
+  .app-root.setup-mode .game-title {
     color: #fcfcfc;
+    text-align: center;
+  }
+
+  .app-root.game-mode .game-title {
+    color: #152938;
   }
 
   .header-actions {

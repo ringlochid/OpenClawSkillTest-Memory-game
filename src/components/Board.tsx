@@ -13,20 +13,17 @@ interface BoardProps {
 
 const Board = ({ cards, cols, tileSize, gap, onFlip, disabled }: BoardProps) => {
   const boardSize = tileSize * cols + gap * (cols - 1)
+  const boardStyle: React.CSSProperties = {
+    ['--grid-cols' as any]: String(cols),
+    ['--tile-size' as any]: `${tileSize}px`,
+    ['--board-gap' as any]: `${gap}px`,
+    width: `${boardSize}px`,
+    height: `${boardSize}px`,
+  }
 
   return (
     <section className="board-container" aria-label="Game board">
-      <div
-        className="game-board-grid"
-        role="grid"
-        style={{
-          ['--grid-cols' as any]: String(cols),
-          ['--tile-size' as any]: `${tileSize}px`,
-          ['--board-gap' as any]: `${gap}px`,
-          width: `${boardSize}px`,
-          height: `${boardSize}px`,
-        }}
-      >
+      <div className="game-board-grid" role="grid" style={boardStyle}>
         {cards.map((card, index) => {
           const row = Math.floor(index / cols)
           const col = index % cols

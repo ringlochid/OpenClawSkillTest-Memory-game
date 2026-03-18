@@ -232,6 +232,30 @@ const App = () => {
       .sort((a, b) => b.score - a.score)
   }, [scores, config.players])
 
+  const resultState = React.useMemo(() => {
+    if (config.players <= 1) {
+      return { title: 'You did it!', isTie: false }
+    }
+
+    const first = rankedPlayers[0]
+    if (!first) {
+      return { title: 'Game over', isTie: false }
+    }
+
+    const topScore = first.score
+    const winners = rankedPlayers.filter((entry) => entry.score === topScore)
+    const isTie = winners.length > 1
+
+    if (isTie) {
+      return { title: "It's a tie!", isTie: true }
+    }
+
+    return {
+      title: `Player ${first.player} Wins!`,
+      isTie: false,
+    }
+  }, [config.players, rankedPlayers])
+
   return (
     <main className={`app-root ${screen === 'setup' ? 'setup-mode' : 'game-mode'}`}>
       <div className="game-canvas" role="application">
@@ -272,21 +296,26 @@ const App = () => {
             {won ? (
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
-                  <h2 className="win-title">You did it!</h2>
+                  <h2 className="win-title">{resultState.title}</h2>
                   <p className="win-subtitle">Game over! Here&apos;s how you got on…</p>
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">
-                      {rankedPlayers.map((entry, index) => (
-                        <div
-                          key={entry.player}
-                          className={`result-row ${index === 0 ? 'winner' : ''}`}
-                          role="listitem"
-                        >
-                          <p>{`Player ${entry.player} ${index === 0 ? '(Winner)' : ''}`}</p>
-                          <p>{entry.score}</p>
-                        </div>
-                      ))}
+                      {rankedPlayers.map((entry, index) => {
+                        const isTop = index === 0
+                        const isTiedWinner = resultState.isTie && entry.score === rankedPlayers[0].score
+
+                        return (
+                          <div
+                            key={entry.player}
+                            className={`result-row ${isTop && !resultState.isTie ? 'winner' : ''} ${isTiedWinner ? 'winner' : ''}`}
+                            role="listitem"
+                          >
+                            <p>{`Player ${entry.player}${isTiedWinner ? ' (Winner)' : ''}`}</p>
+                            <p>{entry.score}</p>
+                          </div>
+                        )
+                      })}
                     </div>
                   ) : (
                     <div className="result-list" role="list">

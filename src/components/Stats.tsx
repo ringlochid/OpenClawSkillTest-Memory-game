@@ -44,7 +44,7 @@ const Stats = ({
 }: StatsProps) => {
   if (players > 1) {
     const columns = `repeat(${Math.max(1, players)}, minmax(0, 1fr))`
-    const gap = isMobile ? 4 : players === 2 ? 32 : players === 3 ? 12 : 8
+    const gap = isMobile ? (players === 4 ? 6 : players === 3 ? 8 : 10) : players === 2 ? 32 : players === 3 ? 12 : 8
 
     const containerStyle: React.CSSProperties = {
       gridTemplateColumns: columns,
@@ -53,7 +53,7 @@ const Stats = ({
 
     return (
       <section
-        className={`stats-container players ${isMobile ? 'mobile' : 'desktop'}`}
+        className={`stats-container players ${isMobile ? 'mobile' : 'desktop'} players-${players}`}
         style={containerStyle}
         aria-label="Player scores"
       >
