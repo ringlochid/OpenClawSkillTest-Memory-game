@@ -6,7 +6,6 @@ interface StatsProps {
   players?: number
   playerScores?: number[]
   activePlayer?: number
-  isMobile?: boolean
 }
 
 const formatTime = (seconds: number): string => {
@@ -17,12 +16,14 @@ const formatTime = (seconds: number): string => {
 }
 
 const FooterCard = ({
-  label,
+  shortLabel,
+  fullLabel,
   value,
   active,
   showTurnLabel,
 }: {
-  label: string
+  shortLabel: string
+  fullLabel: string
   value: string | number
   active: boolean
   showTurnLabel: boolean
@@ -30,9 +31,14 @@ const FooterCard = ({
   return (
     <article className={`player-card ${active ? 'active' : ''}`}>
       {active ? <span className="player-card-notch" aria-hidden="true" /> : null}
-      {active && showTurnLabel ? <p className="player-turn-label">CURRENT TURN</p> : null}
-      <p className="stat-label">{label}</p>
-      <p className="stat-value">{value}</p>
+      <div className="player-card-copy">
+        <p className="stat-label">
+          <span className="label-mobile">{shortLabel}</span>
+          <span className="label-desktop">{fullLabel}</span>
+        </p>
+        <p className="stat-value">{value}</p>
+      </div>
+      {active && showTurnLabel ? <p className="player-turn-label">Current Turn</p> : null}
     </article>
   )
 }
@@ -43,27 +49,18 @@ const Stats = ({
   players = 1,
   playerScores = [0, 0, 0, 0],
   activePlayer = 0,
-  isMobile = true,
 }: StatsProps) => {
   if (players > 1) {
-    const columns = `repeat(${Math.max(1, players)}, minmax(0, 1fr))`
-    const gap = isMobile ? (players === 4 ? 6 : players === 3 ? 8 : 10) : players === 2 ? 32 : players === 3 ? 12 : 8
-
-    const containerStyle: React.CSSProperties = {
-      gridTemplateColumns: columns,
-      gap: `${gap}px`,
-    }
-
     return (
       <section
-        className={`stats-container players ${isMobile ? 'mobile' : 'desktop'} players-${players}`}
-        style={containerStyle}
+        className={`stats-container players players-${players}`}
         aria-label="Player scores"
       >
         {playerScores.slice(0, players).map((score, index) => (
           <FooterCard
             key={`${index + 1}`}
-            label={`P${index + 1}`}
+            shortLabel={`P${index + 1}`}
+            fullLabel={`Player ${index + 1}`}
             value={score}
             active={index === activePlayer}
             showTurnLabel={players > 1}
@@ -74,7 +71,7 @@ const Stats = ({
   }
 
   return (
-    <section className={`stats-container solo ${isMobile ? 'mobile' : 'desktop'}`} aria-label="Game stats">
+    <section className="stats-container solo" aria-label="Game stats">
       <article className="stat-card">
         <p className="stat-label">Time</p>
         <p className="stat-value">{formatTime(elapsedSeconds)}</p>

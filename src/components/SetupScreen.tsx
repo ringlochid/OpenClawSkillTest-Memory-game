@@ -12,10 +12,10 @@ const grids: { label: string; value: GridPreset }[] = [
 ]
 
 const players = [
-  { label: '1P', value: 1 },
-  { label: '2P', value: 2 },
-  { label: '3P', value: 3 },
-  { label: '4P', value: 4 },
+  { label: '1', value: 1 },
+  { label: '2', value: 2 },
+  { label: '3', value: 3 },
+  { label: '4', value: 4 },
 ]
 
 interface SetupScreenProps {
@@ -40,7 +40,7 @@ const SetupScreen = ({ config, onConfigChange, onStart }: SetupScreenProps) => {
   return (
     <section className="setup-shell" aria-label="Setup screen">
       <div className="setup-content">
-        <p className="setup-title">memory</p>
+        <h1 className="setup-title">memory</h1>
 
         <form
           className="setup-panel"
@@ -67,26 +67,8 @@ const SetupScreen = ({ config, onConfigChange, onStart }: SetupScreenProps) => {
             </div>
           </fieldset>
 
-          <fieldset className="setup-group" aria-label="Grid selector">
-            <legend className="setup-group-label">Grid</legend>
-            <div className="setup-pills-row" role="radiogroup" aria-label="Grid">
-              {grids.map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  role="radio"
-                  aria-checked={config.grid === item.value}
-                  className={`setup-pill ${config.grid === item.value ? 'active' : 'muted'} ${item.value === '6x6' ? 'grow-pill' : ''}`}
-                  onClick={() => setGrid(item.value)}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-
           <fieldset className="setup-group" aria-label="Player selector">
-            <legend className="setup-group-label">Players</legend>
+            <legend className="setup-group-label">Numbers of Players</legend>
             <div className="setup-pills-row" role="radiogroup" aria-label="Players">
               {players.map((item) => (
                 <button
@@ -96,6 +78,24 @@ const SetupScreen = ({ config, onConfigChange, onStart }: SetupScreenProps) => {
                   aria-checked={config.players === item.value}
                   className={`setup-pill ${config.players === item.value ? 'active' : 'muted'}`}
                   onClick={() => setPlayers(item.value)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="setup-group" aria-label="Grid selector">
+            <legend className="setup-group-label">Grid Size</legend>
+            <div className="setup-pills-row" role="radiogroup" aria-label="Grid">
+              {grids.map((item) => (
+                <button
+                  key={item.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={config.grid === item.value}
+                  className={`setup-pill ${config.grid === item.value ? 'active' : 'muted'}`}
+                  onClick={() => setGrid(item.value)}
                 >
                   {item.label}
                 </button>

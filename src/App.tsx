@@ -52,21 +52,12 @@ const App = () => {
   const [isBusy, setIsBusy] = React.useState(false)
   const [won, setWon] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
-  const [viewportWidth, setViewportWidth] = React.useState<number>(375)
   const [currentPlayer, setCurrentPlayer] = React.useState(0)
   const [scores, setScores] = React.useState<number[]>([0, 0, 0, 0])
   const flipRef = React.useRef<number | null>(null)
 
-  const { rows, cols } = parseGrid(config.grid)
-  const isMobile = viewportWidth < 768
+  const { cols } = parseGrid(config.grid)
   const isReady = cards.length > 0
-
-  React.useEffect(() => {
-    const update = () => setViewportWidth(window.innerWidth)
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
 
   React.useEffect(() => {
     if (screen !== 'game' || won) return
@@ -233,7 +224,7 @@ const App = () => {
     if (!first) {
       return {
         title: 'Game over',
-        subtitle: 'Game over! Here are the results...',
+        subtitle: 'Game over! Here are the results…',
         isTie: false,
         topWinners: [] as { player: number; score: number }[],
       }
@@ -244,7 +235,7 @@ const App = () => {
 
     return {
       title: winners.length > 1 ? 'It’s a tie!' : `Player ${first.player} Wins!`,
-      subtitle: 'Game over! Here are the results...',
+      subtitle: 'Game over! Here are the results…',
       isTie: winners.length > 1,
       topWinners: winners,
     }
@@ -266,7 +257,6 @@ const App = () => {
               onRestart={restartGame}
               onNewGame={handleNewGame}
               onShowMenu={() => setMenuOpen((value) => !value)}
-              isMobile={isMobile}
             />
 
             <section className={`game-layout layout-${cols}`} aria-label="Gameplay">
@@ -283,15 +273,16 @@ const App = () => {
                 players={config.players}
                 playerScores={scores}
                 activePlayer={currentPlayer}
-                isMobile={isMobile}
               />
             </section>
 
             {won ? (
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
-                  <h2 className="win-title">{resultState.title}</h2>
-                  <p className="win-subtitle">{resultState.subtitle}</p>
+                  <div className="win-copy">
+                    <h2 className="win-title">{resultState.title}</h2>
+                    <p className="win-subtitle">{resultState.subtitle}</p>
+                  </div>
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">

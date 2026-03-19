@@ -7,7 +7,7 @@ interface CardProps {
   disabled: boolean
 }
 
-type CardState = 'concealed' | 'revealed'
+type CardState = 'concealed' | 'revealed' | 'matched'
 
 const getMaskStyle = (iconUrl: string) => ({
   '--icon-url': `url('${iconUrl}')`,
@@ -23,23 +23,21 @@ const getFaceType = (card: CardModel): 'icon' | 'number' => {
 }
 
 const Card = ({ card, onActivate, disabled }: CardProps) => {
-  const state: CardState = card.isFlipped || card.isMatched ? 'revealed' : 'concealed'
-  const isMatched = card.isMatched
+  const state: CardState = card.isMatched ? 'matched' : card.isFlipped ? 'revealed' : 'concealed'
   const faceType = getFaceType(card)
+  const showFace = state !== 'concealed'
 
   return (
     <button
       type="button"
-      className={`game-card is-${state} ${isMatched ? 'is-selected' : ''}`}
+      className={`game-card is-${state}`}
       onClick={disabled ? undefined : onActivate}
       disabled={disabled}
-      aria-pressed={state === 'revealed'}
-      aria-label={`Card ${card.value} ${state}`}
+      aria-pressed={showFace}
+      aria-label={`Card ${card.value} ${showFace ? 'revealed' : 'concealed'}`}
     >
-      <span className="card-content" aria-hidden={state === 'concealed'}>
-        {state === 'concealed' ? <span className="card-back" /> : null}
-
-        {state === 'revealed' ? (
+      <span className="card-content" aria-hidden={!showFace}>
+        {showFace ? (
           faceType === 'icon' ? <span className="card-icon" style={getMaskStyle(card.value)} /> : <span className="card-value">{card.value}</span>
         ) : null}
       </span>
