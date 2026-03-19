@@ -21,10 +21,10 @@
   --card-icon-size: 40px;
   --playfield-width: 336px;
 
-  --tile-size-mobile-4x4: 78px;
-  --board-gap-mobile-4x4: 14px;
-  --card-font-size-mobile-4x4: 44px;
-  --card-icon-size-mobile-4x4: 40px;
+  --tile-size-mobile-4x4: 72.5px;
+  --board-gap-mobile-4x4: 12px;
+  --card-font-size-mobile-4x4: 40px;
+  --card-icon-size-mobile-4x4: 35px;
   --playfield-width-mobile-4x4: calc((var(--tile-size-mobile-4x4) * 4) + (var(--board-gap-mobile-4x4) * 3));
 
   --tile-size-desktop-4x4: 124px;
@@ -54,10 +54,19 @@
   outline: none;
 }
 
+html,
 body {
+  width: 100%;
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--canvas);
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100dvh;
 }
 
 button {
@@ -65,13 +74,11 @@ button {
   color: inherit;
 }
 
-#root {
-  min-height: 100vh;
-}
-
 .app-root {
-  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   position: relative;
+  overflow: hidden;
 }
 
 .app-root.game-mode {
@@ -84,16 +91,17 @@ button {
 
 .game-canvas {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   background: inherit;
 }
 
 .game-mode-shell {
-  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 34px 24px 24px;
+  padding: clamp(24px, 4.4dvh, 34px) 22px 20px;
 }
 
 .game-layout {
@@ -256,18 +264,19 @@ button {
   color: #fcfcfc;
 }
 
-.game-card.is-flipped {
+.game-card.is-revealed {
   background: #f8fbff;
   color: #152938;
   box-shadow: inset 0 0 0 3px rgba(253, 162, 20, 0.38);
 }
 
-.game-card.is-matched {
+.game-card.is-selected {
   background: #fda214;
   color: #1f2937;
+  box-shadow: inset 0 0 0 3px rgba(24, 33, 42, 0.22);
 }
 
-.game-card.is-matched .card-icon {
+.game-card.is-selected .card-icon {
   opacity: 1;
 }
 
@@ -427,10 +436,11 @@ button {
 .setup-shell {
   position: absolute;
   inset: 0;
+  min-height: 100dvh;
   background: #152938;
   display: grid;
   place-items: center;
-  padding: 24px 18px;
+  padding: clamp(16px, 4vh, 28px) clamp(14px, 5vw, 24px);
 }
 
 .setup-content {
@@ -442,10 +452,10 @@ button {
 }
 
 .setup-title {
-  margin: 0 0 22px;
+  margin: 0 0 18px;
   color: #fcfcfc;
   text-align: center;
-  font-size: 32px;
+  font-size: 36px;
   line-height: 1.05;
   letter-spacing: 0.2px;
 }
@@ -454,10 +464,10 @@ button {
   width: 100%;
   border-radius: 20px;
   background: #fcfcfc;
-  padding: 30px 22px;
+  padding: 22px 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .setup-group {
@@ -509,9 +519,9 @@ button {
 }
 
 .setup-start-btn {
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   width: 100%;
-  height: 48px;
+  height: 46px;
   border-radius: 9999px;
   border: 0;
   font-size: 18px;
@@ -601,17 +611,19 @@ button {
   z-index: 40;
   display: grid;
   place-items: center;
+  padding: clamp(8px, 2.2dvh, 20px);
   background: rgba(21, 41, 56, 0.36);
 }
 
 
 .menu-modal {
-  width: min(92vw, 360px);
-  max-width: 360px;
-  border-radius: 12px;
+  width: min(92vw, 340px);
+  max-width: 340px;
+  max-height: min(78dvh, 340px);
+  border-radius: 14px;
   background: #fcfcfc;
   border: 1px solid #bcced9;
-  padding: 26px 22px;
+  padding: 24px 20px;
   display: grid;
   align-content: center;
   justify-content: center;
@@ -619,7 +631,7 @@ button {
 
 .menu-modal-stack {
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   height: auto;
   display: grid;
   gap: 12px;
@@ -651,7 +663,7 @@ button {
   }
 
   .game-mode-shell {
-    padding-top: 42px;
+    padding: clamp(18px, 3.8dvh, 28px) 14px 16px;
   }
 
   .game-title {
@@ -659,8 +671,9 @@ button {
   }
 
   .game-layout {
-    margin-top: 20px;
-    justify-content: space-between;
+    margin-top: 14px;
+    gap: 12px;
+    justify-content: flex-start;
   }
 
   .game-layout.layout-4 {
@@ -680,18 +693,20 @@ button {
   }
 
   .board-container {
-    margin-top: 30px;
-    margin-bottom: 14px;
+    margin-top: 8px;
+    margin-bottom: 10px;
   }
 
   .stats-container.solo.mobile {
-    gap: 14px;
-    margin-top: 14px;
+    gap: 10px;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 
   .stats-container.players.mobile {
-    gap: 12px;
-    margin-top: 12px;
+    gap: 8px;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 
   .win-card {
@@ -715,26 +730,20 @@ button {
     gap: 12px;
   }
 
-  .menu-overlay {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: clamp(68px, 12vh, 98px);
-  }
-
   .menu-modal {
-    width: min(94vw, 360px);
-    padding: 22px 20px;
+    width: min(90vw, 330px);
+    max-width: 330px;
+    padding: 20px 18px;
     border-radius: 14px;
   }
 
   .menu-modal-stack {
-    gap: 16px;
+    gap: 14px;
     max-width: 100%;
   }
 
   .menu-modal-btn {
-    height: 52px;
+    height: 50px;
     font-size: 17px;
   }
 
