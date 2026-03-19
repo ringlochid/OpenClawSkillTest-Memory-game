@@ -215,10 +215,10 @@ const App = () => {
   const boardSizing = React.useMemo(() => {
     if (cols === 4) {
       return {
-        tileSize: isMobile ? 72.5 : 112,
-        gap: isMobile ? 12 : 22,
-        cardFontSize: isMobile ? 40 : 58,
-        iconSize: isMobile ? 36 : 54,
+        tileSize: isMobile ? 78 : 124,
+        gap: isMobile ? 14 : 24,
+        cardFontSize: isMobile ? 44 : 64,
+        iconSize: isMobile ? 40 : 58,
       }
     }
 
