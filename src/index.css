@@ -13,7 +13,37 @@
   --orange: #fda214;
   --light: #dfe7ec;
   --canvas: #fcfcfc;
-  --playfield-width: 100%;
+
+  /* Rhythm tokens */
+  --tile-size: 78px;
+  --board-gap: 14px;
+  --card-font-size: 44px;
+  --card-icon-size: 40px;
+  --playfield-width: 336px;
+
+  --tile-size-mobile-4x4: 78px;
+  --board-gap-mobile-4x4: 14px;
+  --card-font-size-mobile-4x4: 44px;
+  --card-icon-size-mobile-4x4: 40px;
+  --playfield-width-mobile-4x4: calc((var(--tile-size-mobile-4x4) * 4) + (var(--board-gap-mobile-4x4) * 3));
+
+  --tile-size-desktop-4x4: 124px;
+  --board-gap-desktop-4x4: 24px;
+  --card-font-size-desktop-4x4: 64px;
+  --card-icon-size-desktop-4x4: 58px;
+  --playfield-width-desktop-4x4: calc((var(--tile-size-desktop-4x4) * 4) + (var(--board-gap-desktop-4x4) * 3));
+
+  --tile-size-mobile-6x6: 47px;
+  --board-gap-mobile-6x6: 8px;
+  --card-font-size-mobile-6x6: 22px;
+  --card-icon-size-mobile-6x6: 20px;
+  --playfield-width-mobile-6x6: calc((var(--tile-size-mobile-6x6) * 6) + (var(--board-gap-mobile-6x6) * 5));
+
+  --tile-size-desktop-6x6: 73px;
+  --board-gap-desktop-6x6: 14px;
+  --card-font-size-desktop-6x6: 36px;
+  --card-icon-size-desktop-6x6: 33px;
+  --playfield-width-desktop-6x6: calc((var(--tile-size-desktop-6x6) * 6) + (var(--board-gap-desktop-6x6) * 5));
 }
 
 * {
@@ -73,6 +103,24 @@ button {
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
+}
+
+.game-layout.layout-4 {
+  --grid-cols: 4;
+  --tile-size: var(--tile-size-mobile-4x4);
+  --board-gap: var(--board-gap-mobile-4x4);
+  --card-font-size: var(--card-font-size-mobile-4x4);
+  --card-icon-size: var(--card-icon-size-mobile-4x4);
+  --playfield-width: var(--playfield-width-mobile-4x4);
+}
+
+.game-layout.layout-6 {
+  --grid-cols: 6;
+  --tile-size: var(--tile-size-mobile-6x6);
+  --board-gap: var(--board-gap-mobile-6x6);
+  --card-font-size: var(--card-font-size-mobile-6x6);
+  --card-icon-size: var(--card-icon-size-mobile-6x6);
+  --playfield-width: var(--playfield-width-mobile-6x6);
 }
 
 .game-header {
@@ -556,6 +604,7 @@ button {
   background: rgba(21, 41, 56, 0.36);
 }
 
+
 .menu-modal {
   width: min(92vw, 360px);
   max-width: 360px;
@@ -601,28 +650,48 @@ button {
     width: 100%;
   }
 
+  .game-mode-shell {
+    padding-top: 42px;
+  }
+
   .game-title {
     margin-right: 2px;
   }
 
   .game-layout {
-    margin-top: 16px;
+    margin-top: 20px;
     justify-content: space-between;
   }
 
+  .game-layout.layout-4 {
+    --tile-size: var(--tile-size-mobile-4x4);
+    --board-gap: var(--board-gap-mobile-4x4);
+    --card-font-size: var(--card-font-size-mobile-4x4);
+    --card-icon-size: var(--card-icon-size-mobile-4x4);
+    --playfield-width: var(--playfield-width-mobile-4x4);
+  }
+
+  .game-layout.layout-6 {
+    --tile-size: var(--tile-size-mobile-6x6);
+    --board-gap: var(--board-gap-mobile-6x6);
+    --card-font-size: var(--card-font-size-mobile-6x6);
+    --card-icon-size: var(--card-icon-size-mobile-6x6);
+    --playfield-width: var(--playfield-width-mobile-6x6);
+  }
+
   .board-container {
-    margin-top: 22px;
-    margin-bottom: 8px;
+    margin-top: 30px;
+    margin-bottom: 14px;
   }
 
   .stats-container.solo.mobile {
     gap: 14px;
-    margin-top: 8px;
+    margin-top: 14px;
   }
 
   .stats-container.players.mobile {
     gap: 12px;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 
   .win-card {
@@ -637,11 +706,6 @@ button {
     line-height: 0.98;
   }
 
-  .win-subtitle {
-    font-size: 15px;
-    line-height: 1.35;
-  }
-
   .result-row {
     height: 50px;
     padding: 0 12px;
@@ -651,14 +715,21 @@ button {
     gap: 12px;
   }
 
+  .menu-overlay {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: clamp(68px, 12vh, 98px);
+  }
+
   .menu-modal {
-    width: min(95vw, 360px);
+    width: min(94vw, 360px);
     padding: 22px 20px;
     border-radius: 14px;
   }
 
   .menu-modal-stack {
-    gap: 14px;
+    gap: 16px;
     max-width: 100%;
   }
 
@@ -666,6 +737,7 @@ button {
     height: 52px;
     font-size: 17px;
   }
+
 }
 
 @media (min-width: 768px) {
@@ -688,6 +760,19 @@ button {
 
   .game-layout.layout-4 {
     margin-top: 24px;
+    --tile-size: var(--tile-size-desktop-4x4);
+    --board-gap: var(--board-gap-desktop-4x4);
+    --card-font-size: var(--card-font-size-desktop-4x4);
+    --card-icon-size: var(--card-icon-size-desktop-4x4);
+    --playfield-width: var(--playfield-width-desktop-4x4);
+  }
+
+  .game-layout.layout-6 {
+    --tile-size: var(--tile-size-desktop-6x6);
+    --board-gap: var(--board-gap-desktop-6x6);
+    --card-font-size: var(--card-font-size-desktop-6x6);
+    --card-icon-size: var(--card-icon-size-desktop-6x6);
+    --playfield-width: var(--playfield-width-desktop-6x6);
   }
 
   .game-title {
@@ -709,8 +794,12 @@ button {
   }
 
   .game-layout.layout-4 .board-container {
-    margin-top: 28px;
-    margin-bottom: 30px;
+    margin-top: 34px;
+    margin-bottom: 34px;
+  }
+
+  .game-layout.layout-4 .stats-container {
+    margin-top: 8px;
   }
 
   .stats-container {
@@ -762,19 +851,21 @@ button {
   }
 
   .menu-modal {
-    width: min(420px, 78vw);
-    padding: 24px 22px;
-    border-radius: 14px;
+    width: min(520px, 80vw);
+    max-width: 520px;
+    padding: 28px 28px 30px;
+    border-radius: 16px;
   }
 
   .menu-modal-stack {
     max-width: 100%;
-    gap: 14px;
+    gap: 16px;
   }
 
   .menu-modal-btn {
     max-width: 100%;
-    height: 52px;
+    height: 54px;
+    max-width: 480px;
   }
 
   .setup-content {

@@ -212,24 +212,6 @@ const App = () => {
     }, 620)
   }
 
-  const boardSizing = React.useMemo(() => {
-    if (cols === 4) {
-      return {
-        tileSize: isMobile ? 78 : 124,
-        gap: isMobile ? 14 : 24,
-        cardFontSize: isMobile ? 44 : 64,
-        iconSize: isMobile ? 40 : 58,
-      }
-    }
-
-    return {
-      tileSize: isMobile ? 47 : 73,
-      gap: isMobile ? 8 : 14,
-      cardFontSize: isMobile ? 22 : 36,
-      iconSize: isMobile ? 20 : 33,
-    }
-  }, [cols, isMobile])
-
   const rankedPlayers = React.useMemo(() => {
     return scores
       .map((score, index) => ({ player: index + 1, score }))
@@ -268,8 +250,6 @@ const App = () => {
     }
   }, [config.players, rankedPlayers])
 
-  const boardWidthPx = `${boardSizing.tileSize * cols + boardSizing.gap * (cols - 1)}px`
-
   return (
     <main className={`app-root ${screen === 'setup' ? 'setup-mode' : 'game-mode'}`}>
       <div className="game-canvas" role="application">
@@ -280,12 +260,7 @@ const App = () => {
             onStart={handleStartGame}
           />
         ) : (
-          <section
-            className="game-mode-shell"
-            style={{
-              '--playfield-width': boardWidthPx,
-            } as React.CSSProperties}
-          >
+          <section className={`game-mode-shell layout-${cols}`}>
             <Header
               mode={screen}
               onRestart={restartGame}
@@ -298,10 +273,6 @@ const App = () => {
               <Board
                 cards={cards}
                 cols={cols}
-                tileSize={boardSizing.tileSize}
-                gap={boardSizing.gap}
-                cardFontSize={boardSizing.cardFontSize}
-                iconSize={boardSizing.iconSize}
                 onFlip={handleFlip}
                 disabled={isBusy || won || menuOpen}
               />
