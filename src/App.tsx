@@ -241,7 +241,7 @@ const App = () => {
     if (config.players <= 1) {
       return {
         title: 'You did it!',
-        subtitle: "Game over! Here's how you did.",
+        subtitle: "Game over! Here's how you got on…",
         isTie: false,
         topWinners: [] as { player: number; score: number }[],
       }
