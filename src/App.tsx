@@ -215,8 +215,8 @@ const App = () => {
   const boardSizing = React.useMemo(() => {
     if (cols === 4) {
       return {
-        tileSize: isMobile ? 72.5 : 118,
-        gap: isMobile ? 12 : 24,
+        tileSize: isMobile ? 72.5 : 112,
+        gap: isMobile ? 12 : 22,
         cardFontSize: isMobile ? 40 : 58,
         iconSize: isMobile ? 36 : 54,
       }
@@ -241,6 +241,7 @@ const App = () => {
     if (config.players <= 1) {
       return {
         title: 'You did it!',
+        subtitle: "Game over! Here's how you did.",
         isTie: false,
         topWinners: [] as { player: number; score: number }[],
       }
@@ -250,6 +251,7 @@ const App = () => {
     if (!first) {
       return {
         title: 'Game over',
+        subtitle: 'Game over! Here are the results...',
         isTie: false,
         topWinners: [] as { player: number; score: number }[],
       }
@@ -259,11 +261,14 @@ const App = () => {
     const winners = rankedPlayers.filter((entry) => entry.score === topScore)
 
     return {
-      title: winners.length > 1 ? "It's a tie!" : `Player ${first.player} Wins!`,
+      title: winners.length > 1 ? 'It’s a tie!' : `Player ${first.player} Wins!`,
+      subtitle: 'Game over! Here are the results...',
       isTie: winners.length > 1,
       topWinners: winners,
     }
   }, [config.players, rankedPlayers])
+
+  const boardWidthPx = `${boardSizing.tileSize * cols + boardSizing.gap * (cols - 1)}px`
 
   return (
     <main className={`app-root ${screen === 'setup' ? 'setup-mode' : 'game-mode'}`}>
@@ -275,7 +280,12 @@ const App = () => {
             onStart={handleStartGame}
           />
         ) : (
-          <section className="game-mode-shell">
+          <section
+            className="game-mode-shell"
+            style={{
+              '--playfield-width': boardWidthPx,
+            } as React.CSSProperties}
+          >
             <Header
               mode={screen}
               onRestart={restartGame}
@@ -284,7 +294,7 @@ const App = () => {
               isMobile={isMobile}
             />
 
-            <section className="game-layout" aria-label="Gameplay">
+            <section className={`game-layout layout-${cols}`} aria-label="Gameplay">
               <Board
                 cards={cards}
                 cols={cols}
@@ -310,7 +320,7 @@ const App = () => {
               <section className="win-overlay" aria-live="polite">
                 <div className="win-card">
                   <h2 className="win-title">{resultState.title}</h2>
-                  <p className="win-subtitle">Game over — here&apos;s how you did.</p>
+                  <p className="win-subtitle">{resultState.subtitle}</p>
 
                   {config.players > 1 ? (
                     <div className="result-list" role="list">
@@ -326,7 +336,7 @@ const App = () => {
                             role="listitem"
                           >
                             <p>{`Player ${entry.player}${isWinner ? ' (Winner)' : ''}`}</p>
-                            <p>{entry.score} Pair{entry.score === 1 ? '' : 's'}</p>
+                            <p>{entry.score} Pairs</p>
                           </div>
                         )
                       })}
@@ -334,14 +344,14 @@ const App = () => {
                   ) : (
                     <div className="result-list" role="list">
                       <div className="result-row">
-                        <p>Time</p>
+                        <p>Time Elapsed</p>
                         <p>
                           {String(Math.floor(elapsed / 60)).padStart(2, '0')}:{String(elapsed % 60).padStart(2, '0')}
                         </p>
                       </div>
                       <div className="result-row">
-                        <p>Moves</p>
-                        <p>{moves}</p>
+                        <p>Moves Taken</p>
+                        <p>{moves} Moves</p>
                       </div>
                     </div>
                   )}
@@ -351,7 +361,7 @@ const App = () => {
                       Restart
                     </button>
                     <button type="button" className="menu-modal-btn" onClick={handleNewGame}>
-                      New Game
+                      Setup New Game
                     </button>
                   </div>
                 </div>

@@ -13,6 +13,7 @@
   --orange: #fda214;
   --light: #dfe7ec;
   --canvas: #fcfcfc;
+  --playfield-width: 100%;
 }
 
 * {
@@ -167,6 +168,11 @@ button {
   margin-top: 12px;
 }
 
+.board-container > .game-board-grid {
+  width: var(--playfield-width, fit-content);
+  height: var(--playfield-width, fit-content);
+}
+
 .game-board-grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols), var(--tile-size));
@@ -203,18 +209,18 @@ button {
 }
 
 .game-card.is-flipped {
-  background: #fcfcfc;
+  background: #f8fbff;
   color: #152938;
-  box-shadow: inset 0 0 0 3px #fda214;
+  box-shadow: inset 0 0 0 3px rgba(253, 162, 20, 0.38);
 }
 
 .game-card.is-matched {
-  background: #dfe7ec;
-  color: #7191a5;
+  background: #fda214;
+  color: #1f2937;
 }
 
 .game-card.is-matched .card-icon {
-  opacity: 0.92;
+  opacity: 1;
 }
 
 .card-content {
@@ -227,11 +233,11 @@ button {
 }
 
 .card-back {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+  background: #dbe5ee;
+  box-shadow: none;
 }
 
 .card-content {
@@ -260,7 +266,7 @@ button {
 }
 
 .stats-container {
-  width: 100%;
+  width: min(var(--playfield-width, 100%), 100%);
   display: grid;
   margin-top: 16px;
 }
@@ -590,6 +596,76 @@ button {
   .header-actions {
     display: none;
   }
+
+  .stats-container {
+    width: 100%;
+  }
+
+  .game-title {
+    margin-right: 2px;
+  }
+
+  .game-layout {
+    margin-top: 12px;
+    justify-content: flex-start;
+  }
+
+  .board-container {
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+
+  .stats-container.solo.mobile {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .stats-container.players.mobile {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .win-card {
+    width: min(90vw, 327px);
+    padding: 20px 16px;
+    gap: 14px;
+    border-radius: 14px;
+  }
+
+  .win-title {
+    font-size: 38px;
+    line-height: 0.98;
+  }
+
+  .win-subtitle {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .result-row {
+    height: 50px;
+    padding: 0 12px;
+  }
+
+  .result-actions {
+    gap: 12px;
+  }
+
+  .menu-modal {
+    width: min(92vw, 327px);
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  .menu-modal-stack {
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .menu-modal-btn {
+    height: 52px;
+    font-size: 17px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -606,8 +682,12 @@ button {
   }
 
   .game-layout {
-    margin-top: 40px;
+    margin-top: 32px;
     justify-content: flex-start;
+  }
+
+  .game-layout.layout-4 {
+    margin-top: 24px;
   }
 
   .game-title {
@@ -623,16 +703,30 @@ button {
   }
 
   .board-container {
-    margin-top: 52px;
-    margin-bottom: 56px;
+    margin-top: 34px;
+    margin-bottom: 38px;
     min-height: 0;
   }
 
+  .game-layout.layout-4 .board-container {
+    margin-top: 28px;
+    margin-bottom: 36px;
+  }
+
   .stats-container {
-    width: 513px;
+    width: var(--playfield-width, 100%);
     margin: 0 auto;
     margin-bottom: 0;
     margin-top: 0;
+  }
+
+  .game-layout.layout-6 {
+    margin-top: 32px;
+  }
+
+  .game-layout.layout-6 .board-container {
+    margin-top: 34px;
+    margin-bottom: 38px;
   }
 
   .stats-container.solo {
